@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오피스 툴-픽! 마리오 챌린지</title>
+    <!-- Tailwind CSS for modern layout structure -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Retro & Modern styles -->
+    <link href="https://fonts.googleapis.com/css2?family=DungGeunMo&family=Pretendard:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* Custom retro styling elements */
+        .font-retro {
+            font-family: 'DungGeunMo', monospace;
+        }
+        .font-sans-custom {
+            font-family: 'Pretendard', sans-serif;
+        }
+        /* Retro pixel borders and shadows */
+        .pixel-border {
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0px #000;
+        }
+        .pixel-btn {
+            position: relative;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0px #000;
+            transition: all 0.1s ease;
+        }
+        .pixel-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #000;
+        }
+        /* Custom animations for the retro vibe */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 2s ease-in-out infinite;
+        }
+        canvas {
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body class="bg-blue-950 text-white font-sans-custom min-h-screen flex flex-col items-center justify-center p-4 selection:bg-yellow-400 selection:text-black">
+
+    <div id="game-container" class="w-full max-w-2xl bg-slate-900 border-4 border-blue-600 rounded-xl p-6 shadow-[8px_8px_0px_#000] relative overflow-hidden">
+        
+        <!-- HEADER / BRANDING -->
+        <header class="text-center mb-6 relative">
+            <div class="flex items-center justify-between mb-2">
+                <span class="inline-block bg-yellow-400 text-black font-retro text-xs px-2 py-1 pixel-border animate-pulse">OFFICE RUNNER v1.5</span>
+                <!-- QR Code Share Button -->
+                <button onclick="openQrModal()" class="pixel-btn bg-indigo-600 hover:bg-indigo-500 text-white font-retro text-xs px-2.5 py-1 rounded flex items-center gap-1">
+                    📱 QR코드 공유
+                </button>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-retro text-yellow-300 tracking-wider">오피스 툴-픽! 챌린지</h1>
+            <p class="text-xs text-slate-400 mt-1">단축키를 맞추고 장애물을 뛰어넘어 칼퇴에 성공하세요!</p>
+        </header>
+
+        <!-- ==================== PAGE 1: CATEGORY SELECTION ==================== -->
+        <div id="page-category" class="space-y-6">
+            <div class="text-center py-4 bg-slate-800 rounded-lg border-2 border-slate-700">
+                <p class="font-retro text-sm text-indigo-300">STEP 1: 공략할 오피스 툴을 선택하세요</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <!-- Excel -->
+                <button onclick="selectCategory('excel')" class="pixel-btn bg-emerald-600 hover:bg-emerald-500 p-4 rounded text-left flex flex-col justify-between h-32 group">
+                    <svg class="w-10 h-10 drop-shadow-md group-hover:scale-110 transition-transform" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 6H38C40.2 6 42 7.8 42 10V38C42 40.2 40.2 42 38 42H16V6Z" fill="#107C41"/>
+                        <path d="M16 6H38C40.2 6 42 7.8 42 10V18H16V6Z" fill="#185ABD" fill-opacity="0.2"/>
+                        <path d="M16 18H42V30H16V18Z" fill="#107C41"/>
+                        <path d="M16 30H42V38C42 40.2 40.2 42 38 42H16V30Z" fill="#0C5E31"/>
+                        <rect x="6" y="11" width="22" height="26" rx="3" fill="#107C41" stroke="#1D8A4E" stroke-width="1"/>
+                        <path d="M11.5 17.5H14.8L17 21.8L19.2 17.5H22.5L18.8 24L22.5 30.5H19.2L17 26.2L14.8 30.5H11.5L15.2 24L11.5 17.5Z" fill="white"/>
+                    </svg>
+                    <div>
+                        <h3 class="font-retro text-lg text-white">엑셀 (Excel)</h3>
+                        <p class="text-[10px] text-emerald-200 mt-1">데이터 핸들링 & 수식 마스터</p>
+                    </div>
+                </button>
+                <!-- Notion -->
+                <button onclick="selectCategory('notion')" class="pixel-btn bg-stone-700 hover:bg-stone-600 p-4 rounded text-left flex flex-col justify-between h-32 group">
+                    <svg class="w-10 h-10 drop-shadow-md group-hover:scale-110 transition-transform" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="4" y="4" width="40" height="40" rx="8" fill="#F4F4F0"/>
+                        <path d="M12 15L34 11V33L12 37V15Z" fill="#000000"/>
+                        <path d="M12 15L20 13.5L34 11L28 12.5L12 15Z" fill="#333333"/>
+                        <path d="M15 17L32 14V32L15 35V17Z" fill="#FFFFFF"/>
+                        <path d="M19 21.5V30.5L22 30V24L26.5 30.5L29.5 30V21L26.5 21.5V27.5L22 21L19 21.5Z" fill="#000000"/>
+                    </svg>
+                    <div>
+                        <h3 class="font-retro text-lg text-white">노션 (Notion)</h3>
+                        <p class="text-[10px] text-stone-200 mt-1">스마트 워크스페이스 블록 조작</p>
+                    </div>
+                </button>
+                <!-- HWP -->
+                <button onclick="selectCategory('hwp')" class="pixel-btn bg-sky-600 hover:bg-sky-500 p-4 rounded text-left flex flex-col justify-between h-32 group">
+                    <svg class="w-10 h-10 drop-shadow-md group-hover:scale-110 transition-transform" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 18C8 11.3726 13.3726 6 20 6H38C40.2091 6 42 7.79086 42 10V28C42 34.6274 36.6274 40 30 40H12C9.79086 40 8 38.2091 8 36V18Z" fill="#2292D7"/>
+                        <path d="M18 16H30V19H18V16Z" fill="white"/>
+                        <circle cx="24" cy="24" r="3.5" stroke="white" stroke-width="2.5" fill="none"/>
+                        <path d="M17 31H31V33.5H17V31Z" fill="white"/>
+                        <path d="M17 27.5V33.5H19.5V27.5H17Z" fill="white"/>
+                    </svg>
+                    <div>
+                        <h3 class="font-retro text-lg text-white">한글 (HWP)</h3>
+                        <p class="text-[10px] text-sky-200 mt-1">문서 편집의 달인 & 공문서</p>
+                    </div>
+                </button>
+                <!-- PPT -->
+                <button onclick="selectCategory('ppt')" class="pixel-btn bg-orange-600 hover:bg-orange-500 p-4 rounded text-left flex flex-col justify-between h-32 group">
+                    <svg class="w-10 h-10 drop-shadow-md group-hover:scale-110 transition-transform" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="48" height="48" rx="8" fill="#D24726"/>
+                        <rect x="22" y="12" width="20" height="24" rx="2" fill="white"/>
+                        <path d="M30 20C30 17.8 31.8 16 34 16V20H30Z" fill="#D24726"/>
+                        <path d="M34 20V24C31.8 24 30 22.2 30 20H34Z" fill="#D24726" opacity="0.6"/>
+                        <path d="M34 20H38C38 22.2 36.2 24 34 24V20Z" fill="#D24726" opacity="0.8"/>
+                        <rect x="26" y="27" width="12" height="2.5" rx="1" fill="#D24726"/>
+                        <rect x="26" y="31.5" width="8" height="2.5" rx="1" fill="#D24726"/>
+                        <path d="M6 10C6 8.9 6.9 8 8 8H26V40H8C6.9 40 6 39.1 6 38V10Z" fill="#E85028"/>
+                        <path d="M13 16H18.5C20.7 16 22.5 17.8 22.5 20C22.5 22.2 20.7 24 18.5 24H15.8V32H13V16ZM15.8 18.5V21.5H18.5C19.3 21.5 20 20.8 20 20C20 19.2 19.3 18.5 18.5 18.5H15.8Z" fill="white"/>
+                    </svg>
+                    <div>
+                        <h3 class="font-retro text-lg text-white">파워포인트 (PPT)</h3>
+                        <p class="text-[10px] text-orange-200 mt-1">개체 핸들링 & 슬라이드 쇼</p>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 2: DIFFICULTY SELECTION ==================== -->
+        <div id="page-difficulty" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <button onclick="goBack('category')" class="pixel-btn bg-slate-700 hover:bg-slate-600 text-xs px-3 py-1.5 rounded font-retro">← 이전으로</button>
+                <span id="selected-tool-badge" class="font-retro text-yellow-300 text-sm bg-slate-800 px-3 py-1 rounded border border-slate-700"></span>
+            </div>
+            <div class="text-center py-4 bg-slate-800 rounded-lg border-2 border-slate-700">
+                <p class="font-retro text-sm text-indigo-300">STEP 2: 난이도를 선택해 게임을 시작하세요!</p>
+            </div>
+            <div class="space-y-4">
+                <!-- 하 -->
+                <button onclick="startGame('하')" class="pixel-btn bg-sky-500 hover:bg-sky-400 w-full p-4 rounded flex items-center justify-between group">
+                    <div class="text-left">
+                        <span class="font-retro text-lg block">난이도 : 하 (Easy)</span>
+                        <span class="text-xs text-sky-100">기본적인 단축키 및 기능 5문제 수록</span>
+                    </div>
+                    <span class="font-retro text-xl group-hover:translate-x-2 transition-transform">🏃 PLAY →</span>
+                </button>
+                <!-- 중 -->
+                <button onclick="startGame('중')" class="pixel-btn bg-yellow-500 hover:bg-yellow-400 w-full p-4 rounded text-slate-900 flex items-center justify-between group border-black">
+                    <div class="text-left">
+                        <span class="font-retro text-lg block">난이도 : 중 (Normal)</span>
+                        <span class="text-xs text-slate-800">실무 속도를 가르는 실전 커맨드 5문제</span>
+                    </div>
+                    <span class="font-retro text-xl group-hover:translate-x-2 transition-transform">🏃 PLAY →</span>
+                </button>
+                <!-- 상 -->
+                <button onclick="startGame('상')" class="pixel-btn bg-rose-600 hover:bg-rose-500 w-full p-4 rounded flex items-center justify-between group">
+                    <div class="text-left">
+                        <span class="font-retro text-lg block">난이도 : 상 (Hard)</span>
+                        <span class="text-xs text-rose-100">고급 설계와 특수 지식을 요구하는 5문제</span>
+                    </div>
+                    <span class="font-retro text-xl group-hover:translate-x-2 transition-transform">🏃 PLAY →</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 3: GAMEPLAY CANVAS & MODAL ==================== -->
+        <div id="page-game" class="hidden relative space-y-4">
+            <!-- Game Info Bar -->
+            <div class="flex items-center justify-between bg-slate-950 p-3 rounded-lg border-2 border-slate-800 font-retro text-xs md:text-sm">
+                <div>STAGE: <span id="game-stage-num" class="text-yellow-300">1</span>/5</div>
+                <div class="flex items-center gap-1">LIVES: <span id="game-hearts" class="text-rose-500">❤️ ❤️ ❤️</span></div>
+                <div>SCORE: <span id="game-score" class="text-emerald-400">0000</span></div>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="relative bg-sky-400 border-4 border-black rounded-lg overflow-hidden shadow-inner h-64">
+                <canvas id="game-canvas" class="w-full h-full block"></canvas>
+                <!-- Background visual overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-sky-500/20 pointer-events-none"></div>
+            </div>
+
+            <!-- Quiz overlay Modal -->
+            <div id="quiz-modal" class="hidden absolute inset-0 bg-slate-950/90 backdrop-blur-sm flex items-center justify-center p-4 rounded-lg z-20">
+                <div class="bg-slate-900 border-4 border-yellow-400 rounded-lg p-5 w-full max-w-md shadow-[4px_4px_0px_#000] space-y-4 max-h-full overflow-y-auto">
+                    <!-- Header -->
+                    <div class="flex justify-between items-center border-b-2 border-slate-800 pb-2">
+                        <span class="font-retro text-xs text-yellow-300 bg-slate-950 px-2.5 py-1 rounded border border-slate-800">MISSION OBSTACLE</span>
+                        <span id="obstacle-type" class="text-xs text-rose-400 font-bold">⚠️ 야근 괴물 출현!</span>
+                    </div>
+                    
+                    <!-- Question Text -->
+                    <p id="quiz-question" class="text-sm md:text-base font-semibold leading-relaxed text-slate-100">
+                        여기에 질문이 표시됩니다.
+                    </p>
+
+                    <!-- Options container -->
+                    <div id="quiz-options" class="space-y-2">
+                        <!-- Dynamic options here -->
+                    </div>
+
+                    <!-- Feedback -->
+                    <div id="quiz-feedback" class="hidden p-3 rounded border-2 text-xs leading-relaxed">
+                        <div class="font-bold text-sm mb-1" id="feedback-title"></div>
+                        <div id="feedback-text"></div>
+                        <!-- Next action button inside modal -->
+                        <button id="btn-next-action" class="pixel-btn bg-yellow-400 text-black hover:bg-yellow-300 font-retro text-xs w-full py-2 rounded mt-3">
+                            계속하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 4: GAME OVER SCREEN ==================== -->
+        <div id="page-gameover" class="hidden text-center space-y-6 py-8">
+            <span class="text-6xl animate-bounce inline-block">💀</span>
+            <h2 class="text-4xl font-retro text-rose-500">GAME OVER</h2>
+            <p class="text-sm text-slate-300">
+                아이구! 업무 처리 실패로 칼퇴에 성공하지 못했습니다.<br>재도전하여 명예를 회복해보세요!
+            </p>
+            <div class="flex justify-center gap-4">
+                <button onclick="restartSameGame()" class="pixel-btn bg-yellow-400 hover:bg-yellow-300 text-black font-retro px-6 py-3 rounded">
+                    🔄 다시 도전하기
+                </button>
+                <button onclick="goBack('category')" class="pixel-btn bg-slate-700 hover:bg-slate-600 font-retro px-6 py-3 rounded">
+                    🏠 메인으로
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 5: VICTORY SCREEN ==================== -->
+        <div id="page-victory" class="hidden text-center space-y-6 py-4">
+            <div class="animate-float inline-block">
+                <span class="text-6xl">🏆</span>
+            </div>
+            <h2 class="text-4xl font-retro text-yellow-300">CONGRATULATIONS!</h2>
+            <p class="text-sm text-slate-300 max-w-md mx-auto">
+                축하합니다! 완벽하게 모든 장애물을 격파하고 정시 퇴근에 성공하셨습니다.<br>
+                당신의 훌륭한 툴 조작 능력은 업계 최고 수준입니다!
+            </p>
+
+            <div class="bg-slate-950 p-4 rounded-lg border-2 border-slate-800 max-w-xs mx-auto space-y-2">
+                <div class="text-xs text-slate-400">최종 스코어</div>
+                <div id="victory-score" class="text-3xl font-retro text-emerald-400">5000</div>
+                <div class="text-[10px] text-yellow-400 font-retro" id="victory-level-badge">LEVEL: TOOL CONTROLLER</div>
+            </div>
+
+            <!-- Guideline Offer Area -->
+            <div class="bg-indigo-900/40 p-5 rounded-lg border-2 border-indigo-500/30 space-y-4">
+                <p class="text-xs md:text-sm font-semibold text-indigo-200">
+                    🎁 정시 퇴근 기념 특별 보너스!<br>
+                    선택하신 도구의 <span id="victory-tool-name" class="text-yellow-300"></span> 비기 가이드라인(치트시트)을 받으시겠습니까?
+                </p>
+                <div class="flex justify-center gap-3">
+                    <button onclick="showGuideline()" class="pixel-btn bg-yellow-400 text-black hover:bg-yellow-300 font-retro px-5 py-2.5 rounded text-sm">
+                        📁 가이드라인 열기
+                    </button>
+                    <button onclick="goBack('category')" class="pixel-btn bg-slate-700 hover:bg-slate-600 font-retro px-5 py-2.5 rounded text-sm">
+                        🏠 홈으로 가기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE 6: GUIDELINE VIEW ==================== -->
+        <div id="page-guideline" class="hidden space-y-6">
+            <div class="flex items-center justify-between border-b-2 border-slate-800 pb-3">
+                <h2 class="text-xl md:text-2xl font-retro text-yellow-300">📑 <span id="guideline-tool-title"></span> 치트 시트</h2>
+                <button onclick="goBack('category')" class="pixel-btn bg-slate-700 hover:bg-slate-600 font-retro text-xs px-3 py-1.5 rounded">🏠 홈으로</button>
+            </div>
+            
+            <p class="text-xs text-slate-400">
+                언제든지 찾아보며 손놀림을 익힐 수 있도록 정리된 조작 비서입니다. 클릭하여 클립보드에 전체 복사해 활용해 보세요!
+            </p>
+
+            <div class="bg-slate-950 p-4 rounded-lg border-2 border-slate-800 max-h-96 overflow-y-auto space-y-4 text-xs md:text-sm" id="guideline-content">
+                <!-- Dynamically filled with categorized commands -->
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="copyGuidelineToClipboard()" class="pixel-btn bg-emerald-500 text-white hover:bg-emerald-400 font-retro w-full py-3 rounded text-sm">
+                    📋 전체 복사하기
+                </button>
+                <button onclick="printOrShare()" class="pixel-btn bg-indigo-600 text-white hover:bg-indigo-500 font-retro w-full py-3 rounded text-sm">
+                    💾 인쇄 / 저장하기
+                </button>
+            </div>
+            <p id="copy-success-msg" class="text-center text-emerald-400 text-xs hidden font-bold">✓ 클립보드에 복사 완료!</p>
+        </div>
+
+    </div>
+
+    <!-- ==================== QR CODE GENERATOR MODAL ==================== -->
+    <div id="qr-modal" class="hidden fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border-4 border-indigo-500 rounded-xl p-6 w-full max-w-sm text-center shadow-[8px_8px_0px_#000] space-y-4">
+            <div class="flex justify-between items-center border-b-2 border-slate-800 pb-2">
+                <h3 class="font-retro text-yellow-300 text-base">📱 QR코드 접속 연동</h3>
+                <button onclick="closeQrModal()" class="text-slate-400 hover:text-white font-bold text-lg">&times;</button>
+            </div>
+            <p class="text-xs text-slate-300">
+                스마트폰 카메라로 아래 QR코드를 스캔하면<br>게임으로 바로 연결됩니다!
+            </p>
+            
+            <!-- QR Image Box -->
+            <div class="bg-white p-3 rounded-lg border-2 border-black inline-block shadow-md">
+                <img id="qr-image" src="" alt="QR Code" class="w-48 h-48 mx-auto block image-rendering-pixelated">
+            </div>
+
+            <!-- URL Customizer for Hosting -->
+            <div class="text-left space-y-1">
+                <label class="text-[10px] text-slate-400 font-retro">접속 URL 변경 (서버 배포 주소):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="qr-url-input" class="w-full bg-slate-950 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-yellow-400" placeholder="https://">
+                    <button onclick="generateCustomQr()" class="pixel-btn bg-yellow-400 hover:bg-yellow-300 text-black font-retro text-xs px-2 py-1 rounded whitespace-nowrap">적용</button>
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-2">
+                <button onclick="printQrPoster()" class="pixel-btn bg-emerald-600 hover:bg-emerald-500 text-white font-retro text-xs w-full py-2 rounded">
+                    🖨️ QR 포스터 인쇄
+                </button>
+                <button onclick="closeQrModal()" class="pixel-btn bg-slate-700 hover:bg-slate-600 text-white font-retro text-xs w-full py-2 rounded">
+                    닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOUND SYSTEM & MUSIC INDICATOR -->
+    <div class="mt-4 text-center">
+        <p class="text-[10px] text-slate-500 font-retro">SOUNDS SYNTHESIZED VIA WEB AUDIO API • BEST EXPERIENCED WITH HEADPHONES</p>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // Web Audio API Retro Sound Effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // QR Code Generator Logic
+        function openQrModal() {
+            const qrModal = document.getElementById('qr-modal');
+            const urlInput = document.getElementById('qr-url-input');
+            
+            let currentUrl = window.location.href;
+            if (currentUrl.startsWith('file://')) {
+                currentUrl = "https://example.com/productivity_mario_quiz.html";
+            }
+            
+            urlInput.value = currentUrl;
+            updateQrImage(currentUrl);
+            qrModal.classList.remove('hidden');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qr-modal').classList.add('hidden');
+        }
+
+        function generateCustomQr() {
+            const urlInput = document.getElementById('qr-url-input').value.trim();
+            if (urlInput) {
+                updateQrImage(urlInput);
+            }
+        }
+
+        function updateQrImage(url) {
+            const qrImg = document.getElementById('qr-image');
+            qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}`;
+        }
+
+        function printQrPoster() {
+            const url = document.getElementById('qr-url-input').value;
+            const printWin = window.open('', '_blank');
+            if (!printWin) return;
+
+            printWin.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>오피스 툴-픽! 챌린지 QR 코드</title>
+                    <style>
+                        body { font-family: sans-serif; text-align: center; padding: 40px; background: #fff; }
+                        .card { border: 4px solid #000; padding: 40px; display: inline-block; border-radius: 20px; }
+                        h1 { font-size: 28px; margin-bottom: 10px; }
+                        p { font-size: 16px; color: #555; margin-bottom: 30px; }
+                        img { width: 250px; height: 250px; }
+                        .url { margin-top: 20px; font-size: 12px; color: #888; }
+                    </style>
+                </head>
+                <body>
+                    <div class="card">
+                        <h1>🏃‍♂️ 오피스 툴-픽! 챌린지</h1>
+                        <p>QR코드를 스캔하여 단축키 퀴즈에 도전하세요!</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(url)}" />
+                        <div class="url">${url}</div>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => {
+                printWin.print();
+            }, 300);
+        }
+
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'jump') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'correct') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if (type === 'victory') {
+                    const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.type = 'triangle';
+                        o.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+                        g.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.08);
+                        g.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + idx * 0.08 + 0.2);
+                        o.start(audioCtx.currentTime + idx * 0.08);
+                        o.stop(audioCtx.currentTime + idx * 0.08 + 0.2);
+                    });
+                }
+            } catch (e) {
+                console.log("Audio API issue: ", e);
+            }
+        }
+
+        const quizData = {
+            excel: {
+                title: "엑셀 (Excel)",
+                questions: {
+                    "하": [
+                        { q: "현재 셀의 데이터를 편집 상태로 바꾸는 단축키는? (마우스 더블클릭 대신 사용)", options: ["F2", "F4", "F12", "Enter"], correct: 0, key: "F2", r: "F2는 셀에 들어가 마우스 대용으로 즉시 값을 수정할 수 있는 가장 대표적인 조작 단축키입니다." },
+                        { q: "선택한 표 데이터 범위 전체에 필터(Filter)를 즉시 적용하거나 해제하는 단축키는?", options: ["Ctrl + F", "Ctrl + Shift + L", "Ctrl + T", "Alt + Shift + F"], correct: 1, key: "Ctrl + Shift + L", r: "Ctrl + Shift + L은 마우스 클릭 없이 테이블에 즉각 필터를 걸어 데이터 추출을 지원합니다." },
+                        { q: "셀 안에서 텍스트 줄바꿈을 하고 싶을 때 사용하는 유용한 키 조합은?", options: ["Shift + Enter", "Ctrl + Enter", "Alt + Enter", "Space + Enter"], correct: 2, key: "Alt + Enter", r: "Alt + Enter를 사용해야만 엑셀 줄바꿈이 한 셀 안에 들어가게 처리됩니다." },
+                        { q: "셀 주소를 참조하여 채워 넣을 때, 행과 열의 변동을 막기 위한 '절대 참조' 기호는?", options: ["%", "@", "#", "$"], correct: 3, key: "$", r: "절대참조 기호인 $는 F4키를 이용하여 빠르게 행/열 주소 앞에 붙여넣을 수 있습니다." },
+                        { q: "데이터의 맨 끝 셀(경계선)로 한 번에 이동하고 싶을 때 사용하는 키 조합은?", options: ["Ctrl + 방향키", "Alt + 방향키", "Shift + 방향키", "Ctrl + Shift + 방향키"], correct: 0, key: "Ctrl + 방향키", r: "Ctrl을 누른 채 방향키를 입력하면 빈칸 전 마지막 셀까지 순식간에 순간이동 합니다." }
+                    ],
+                    "중": [
+                        { q: "오늘의 실시간 날짜를 셀에 즉시 고정 값으로 입력해 주는 단축키는?", options: ["Ctrl + ; (세미콜론)", "Ctrl + : (콜론)", "Ctrl + Shift + ;", "Alt + D"], correct: 0, key: "Ctrl + ;", r: "Ctrl + ; 는 오늘의 고정 날짜를 입력합니다. (Ctrl + Shift + ; 는 실시간 시간)" },
+                        { q: "표시 형식, 글꼴, 테두리 등을 정하는 '셀 서식' 대화상자를 여는 가장 빠른 단축키는?", options: ["Ctrl + F", "Ctrl + 1", "Ctrl + S", "Alt + H"], correct: 1, key: "Ctrl + 1", r: "Ctrl + 1은 엑셀 작업 도중 셀의 형태를 바꿀 때 가장 자주 활용하는 단축키입니다." },
+                        { q: "수십만 개의 방대한 원본 데이터를 깔끔하게 요약 통계 내주는 엑셀 최강의 데이터 가공 기술명은?", options: ["데이터 유효성", "VLOOKUP", "피벗 테이블", "시나리오 관리"], correct: 2, key: "피벗 테이블", r: "피벗 테이블(Pivot Table)은 드래그 몇 번으로 유기적인 다차원 분석표를 만드는 핵심 툴입니다." },
+                        { q: "수식 입력란에 직접 SUM을 치지 않고, 인접한 수치들의 세로/가로 합계를 원클릭으로 계산하는 단축키는?", options: ["Alt + =", "Alt + +", "Ctrl + Sum", "Shift + S"], correct: 0, key: "Alt + =", r: "Alt + = (AutoSum) 단축키를 이용하면 엑셀이 범위를 자동 인지해 즉시 합산 수식을 넣어줍니다." },
+                        { q: "첫 칸의 데이터 편집 규칙을 인지하여 아래 셀들을 자동으로 똑똑하게 채워주는 '빠른 채우기' 단축키는?", options: ["Ctrl + D", "Ctrl + R", "Ctrl + E", "Ctrl + Enter"], correct: 2, key: "Ctrl + E", r: "Ctrl + E (Flash Fill)는 주소 분리, 이름 마스킹, 문자 결합 등을 스마트하게 해결해줍니다." }
+                    ],
+                    "상": [
+                        { q: "스크롤을 내리거나 우측으로 당겨도 표의 첫 행이나 첫 열이 화면 상단에 박제되어 보이게 하는 최적의 기능은?", options: ["창 분할", "페이지 레이아웃", "틀 고정", "행 높이 통일"], correct: 2, key: "틀 고정", r: "틀 고정을 활용해 대규모 원본 데이터 테이블을 다룰 때 헤더를 유연하게 주시할 수 있습니다." },
+                        { q: "하나의 엑셀 통합 문서 내 다수의 워크시트(Sheet) 사이를 좌우로 순차 이동하는 단축키는?", options: ["Ctrl + PageUp / PageDown", "Alt + PageUp / PageDown", "Ctrl + Tab", "Shift + Tab"], correct: 0, key: "Ctrl + PageUp / PageDown", r: "Ctrl + PageUp (이전 시트) 및 PageDown (다음 시트)을 통해 키보드만으로 시트 간 서핑이 가능합니다." },
+                        { q: "설정한 한계값 미만인 행에만 선별적으로 자동 빨간색 테두리와 음영을 입히고 싶을 때 사용하는 최적의 기술은?", options: ["조건부 서식", "데이터 분석", "행 서식 매크로", "표 스타일"], correct: 0, key: "조건부 서식", r: "조건부 서식은 조건 논리가 참인 셀의 시각 스타일을 능동적으로 바꾸는 기술입니다." },
+                        { q: "엑셀 수식 실행 후 자주 볼 수 있는 오류인 '#N/A'는 정확히 어떤 상태를 가리키나요?", options: ["0으로 값을 나누었음", "인용할 함수 이름이 틀렸음", "수식에서 참값을 찾을 수 없음 (Not Available)", "범위 내 문자가 섞여있음"], correct: 2, key: "#N/A", r: "Not Available의 약어로, VLOOKUP이나 MATCH 실행 시 찾는 값이 존재하지 않을 때 노출됩니다." },
+                        { q: "엑셀 문서 파일 하나를 부르는 고유 명칭은 '워크북(Workbook)', 그렇다면 그 안의 각 개별 시트 페이지는?", options: ["셀(Cell)", "워크시트(Worksheet)", "데이터 그리드", "바인더"], correct: 1, key: "워크시트", r: "통합 문서는 워크북(Workbook)이며, 그 안의 시트는 워크시트(Worksheet)로 구분하는 것이 정석입니다." }
+                    ]
+                }
+            },
+            notion: {
+                title: "노션 (Notion)",
+                questions: {
+                    "하": [
+                        { q: "노션에서 제목, 표, 이미지 등 모든 콘텐츠 명령을 호출하는 기본 특수 문자는?", options: ["@", "/", "#", ":"], correct: 1, key: "/", r: "슬래시(/)를 입력하면 노션 내부 블록 전환을 위한 명령어 목록 창이 자동 실행됩니다." },
+                        { q: "노션 시스템 상에서 페이지를 구성하는 가장 기초적인 데이터 단위는?", options: ["컴포넌트", "블록(Block)", "바인더", "노드"], correct: 1, key: "블록", r: "노션은 텍스트 줄, 이미지, 파일, 표 하나하나가 모두 독립된 '블록(Block)'으로 취급되는 모듈 구조입니다." },
+                        { q: "현재 선택하고 있는 블록이나 페이지를 똑같이 복제해 내는 유용한 단축키는?", options: ["Ctrl + C", "Ctrl + Shift + D", "Ctrl + D", "Ctrl + J"], correct: 2, key: "Ctrl + D", r: "Ctrl + D (Duplicate)는 선택한 블록을 즉시 그 아래에 고스란히 복사-붙여넣기 해주는 비기입니다." },
+                        { q: "화면 환경 전체를 블랙 컬러 '다크 모드'로, 혹은 다시 화이트 '라이트 모드'로 빠르게 반전시키는 단축키는?", options: ["Ctrl + Shift + L", "Ctrl + Shift + D", "Alt + Shift + N", "Ctrl + Alt + L"], correct: 0, key: "Ctrl + Shift + L", r: "Light의 'L'을 딴 Ctrl + Shift + L은 야간 작업 시 눈의 피로를 순식간에 줄여줍니다." },
+                        { q: "공통 프로젝트 템플릿 등 이미 타인이 설계해 둔 고유 노션 페이지 레이아웃을 내 워크스페이스에 통째 복제하는 기능은?", options: ["클리핑", "템플릿 복제", "블록 링크", "인에이블"], correct: 1, key: "템플릿", r: "상단의 '복제(Duplicate)' 링크를 눌러 타인의 템플릿을 그대로 가져와 마음대로 커스텀할 수 있습니다." }
+                    ],
+                    "중": [
+                        { q: "노션 내 모든 전체 공간에서 특정 단어를 빠르게 통합 검색하거나 페이지로 워프하는 창을 켜는 단축키는?", options: ["Ctrl + F", "Ctrl + P", "Ctrl + L", "Ctrl + Alt + K"], correct: 1, key: "Ctrl + P", r: "Ctrl + P (혹은 Ctrl + K)를 누르면 최근 문서 이력 및 퀵 검색을 지원하는 글로벌 검색 바가 뜹니다." },
+                        { q: "작성 중인 텍스트 블록의 수준을 마우스 클릭 없이 '가장 큰 핵심 대제목(Heading 1)' 형태로 승격시키는 단축키는?", options: ["Ctrl + Shift + H", "Ctrl + Shift + 1", "Alt + 1", "Ctrl + Alt + H"], correct: 1, key: "Ctrl + Shift + 1", r: "Ctrl + Shift + 1~3은 각각 H1, H2, H3 제목 스타일을 즉시 토글 매핑해 줍니다." },
+                        { q: "노션의 강점인 '위키(Wiki)' 스타일로 새로운 하위 문서를 만들거나 특정 문서를 바로 언급/연결할 때 쓰는 대괄호 조합은?", options: ["((", "[[", "{{", "[["], correct: 1, key: "[[", r: "[ [ 연속 두 번을 쳐서 간편하게 사내 정보 공유 및 관계형 내부 연결이 수월해집니다." },
+                        { q: "오늘의 할 일 등을 관리하기에 완벽한 '체크박스 목록' 블록을 생성하는 단축키 조합은?", options: ["Ctrl + Shift + 4", "Ctrl + Shift + 9", "Ctrl + Shift + T", "Ctrl + Alt + C"], correct: 1, key: "Ctrl + Shift + 9", r: "Ctrl + Shift + 9는 할 일 체크 리스트를 만드는 빠른 트리거입니다." },
+                        { q: "크롬 등의 브라우저에서 읽던 글이나 뉴스 페이지를 노션으로 즉시 가져올 때 유용한 확장 어플리케이션은?", options: ["웹 클리퍼 (Web Clipper)", "웹 아카이버", "RSS 리더", "블록 세이버"], correct: 0, key: "웹 클리퍼", r: "노션 웹 클리퍼나 세이브 투 노션(Save to Notion) 등을 활용해 즐겨찾기 스크랩북을 만듭니다." }
+                    ],
+                    "상": [
+                        { q: "특정 블록의 복사본을 여러 페이지에 흩어 배치해두고, 어느 한 곳을 고쳐도 실시간으로 연동 수정되도록 돕는 블록은?", options: ["참조된 블록", "동기화된 블록 (Synced Block)", "미러 데이터베이스", "상호 작용 블록"], correct: 1, key: "동기화된 블록", r: "동기화된 블록(Synced Block)은 매뉴얼이나 공통 배너 등을 한 번에 고쳐 일관성을 유지할 때 완벽합니다." },
+                        { q: "한 데이터베이스를 두고, 표, 보드, 캘린더, 갤러리 등의 모양으로 레이아웃을 유기적으로 바꿀 수 있게 지원하는 기능은?", options: ["속성 재배열", "레이블 커스텀", "보기(View) 추가", "관계형 매핑"], correct: 2, key: "보기 추가", r: "보기(View) 추가 기능은 동일한 테이블 속 데이터를 목적에 따라 타임라인이나 보드로 즉각 재구조화합니다." },
+                        { q: "블록의 위치를 마우스 없이 오직 키보드 조합으로만 위아래로 한 단계씩 부드럽게 이송시키는 꿀단축키는?", options: ["Alt + Shift + 방향키", "Ctrl + Alt + 방향키", "Ctrl + Shift + 방향키", "Alt + Tab"], correct: 0, key: "Alt + Shift + 방향키", r: "Alt + Shift + ↑/↓ 키를 통해 타자 입력 흐름을 깨뜨리지 않고 정렬 순서를 바꿉니다." },
+                        { q: "현재 열어놓은 노션 세부 페이지의 공유 웹 링크(URL) 주소를 메모리에 즉시 복사해 주는 단축키는?", options: ["Ctrl + L", "Ctrl + Shift + C", "Alt + Shift + L", "Ctrl + K"], correct: 0, key: "Ctrl + L", r: "Ctrl + L은 브라우저 주소 표시줄 선택이나 노션 데스크톱 앱 내 페이지 고유 주소 복사를 도와 공유를 가속화합니다." },
+                        { q: "노션 페이지 헤더 영역을 고유 개성이나 계절감으로 장식하는, 최상단의 가로로 긴 이미지를 통칭하는 명칭은?", options: ["배너(Banner)", "헤더 아트", "커버(Cover)", "히어로 픽처"], correct: 2, key: "커버", r: "커버(Cover) 이미지는 페이지의 톤앤매너를 시각적으로 완성하는 핵심 요소입니다." }
+                    ]
+                }
+            },
+            hwp: {
+                title: "한글 (HWP)",
+                questions: {
+                    "하": [
+                        { q: "용지 여백, 가로/세로 레이아웃, 인쇄 방향 등을 선결 세팅하는 '편집 용지' 창을 즉시 오픈하는 기능키는?", options: ["F5", "F7", "F10", "F12"], correct: 1, key: "F7", r: "F7 키는 아래한글 문서 제작에 앞서 절대 빼놓을 수 없는 여백 편집 지름길입니다." },
+                        { q: "원형 번호, 그리스 문자, 당구장 기호 등 다채로운 문양을 가져오는 '문자표' 호출 단축키는?", options: ["Ctrl + F10", "Ctrl + Shift + M", "Alt + F10", "Ctrl + Space"], correct: 0, key: "Ctrl + F10", r: "Ctrl + F10은 한글 사용 시 가장 많이 사용되는 특수문자 수집 창입니다." },
+                        { q: "표(Table) 내부에 들어가 개별 칸(셀) 하나를 블록 지정할 때 필수적으로 입력하는 키는?", options: ["F5", "F2", "Shift + Tab", "Ctrl + Space"], correct: 0, key: "F5", r: "F5를 한 번 누르면 셀 지정, 두 번 누르면 빨간 점(범위), 세 번 누르면 전체 선택이 적용됩니다." },
+                        { q: "글자의 서체, 포인트 크기, 장평, 자간 등 스타일을 벼리는 '글자 모양' 창 호출 단축키는?", options: ["Alt + T", "Alt + L", "Ctrl + L", "Alt + C"], correct: 1, key: "Alt + L", r: "Alt + Letter의 'L'을 연상하세요. 글자 전반에 대한 폰트 서식을 다룹니다." },
+                        { q: "HWP 고유 포맷의 한계를 넘어 검색 지원 및 오픈 데이터 연동을 확대하기 위해 최근 기본값 권장 중인 확장자는?", options: ["hwp", "pdf", "hwpx", "docx"], correct: 2, key: "hwpx", r: "국가 및 공공 기관에서도 공식적인 개방형 문서 포맷으로 hwpx 규격 사용을 권유하고 있습니다." }
+                    ],
+                    "중": [
+                        { q: "글꼴, 크기, 문단 속성 전체를 기억시켰다가 다른 본문에 통째로 마킹해 버리는 한글 전설의 단축키는?", options: ["Ctrl + C", "Alt + C", "Shift + C", "Ctrl + Shift + V"], correct: 1, key: "Alt + C", r: "Alt + Copy의 'C'를 통해 일당백 서식 복제가 즉각 실행됩니다." },
+                        { q: "여백, 줄 간격, 들여쓰기, 내어쓰기 등을 조형하는 '문단 모양' 대화상자 단축키는?", options: ["Alt + T", "Alt + M", "Ctrl + T", "Alt + P"], correct: 0, key: "Alt + T", r: "Alt + Text의 'T'를 기억하면 쉽습니다. 문단 외형 전반을 가공합니다." },
+                        { q: "특정 특정 키워드가 본문 전체에 있을 때 일괄 찾아내어 다른 어휘로 원클릭 치환하는 단축키는?", options: ["Ctrl + F", "Ctrl + H", "Ctrl + R", "Alt + H"], correct: 1, key: "Ctrl + H", r: "Ctrl + H (찾아 바꾸기)를 써서 대규모 문서 내 오타나 고유명사 일괄 정정이 수월합니다." },
+                        { q: "문장의 타이포 스타일셋을 다량 저장해 두고 단축키나 클릭만으로 자동 전환 적용하는 강력한 스타일 리스트 창은?", options: ["스타일 (F6)", "글자맵 (F11)", "스타일 마스터 (F4)", "레이아웃 템플릿"], correct: 0, key: "F6", r: "F6 (스타일)을 활용하여 표준화된 공문서, 기획서의 헤드라인 격식을 완벽히 제어합니다." },
+                        { q: "인쇄 시 혹시 글자가 밀리지는 않았는지 시각적으로 미리 지면 프리뷰를 구동시키는 단축키는?", options: ["Ctrl + P (또는 Alt + P)", "Ctrl + F2", "Shift + Alt + P", "Ctrl + P"], correct: 0, key: "Ctrl + P", r: "Ctrl + P 혹은 Alt + P를 통해 실재 인쇄 및 미리보기 전용 서브 시스템을 유도합니다." }
+                    ],
+                    "상": [
+                        { q: "모든 페이지 바닥 중앙이나 우측 하단에 순차적인 자동 페이지 넘버링을 붙여내는 '쪽 번호 매기기' 단축키는?", options: ["Ctrl + N, P", "Ctrl + N, H", "Alt + N, P", "Ctrl + P"], correct: 0, key: "Ctrl + N, P", r: "Ctrl + New / Page 의 N, P 순차 입력을 기억하면 마우스 스크롤 수고가 덜어집니다." },
+                        { q: "본문 내 전문 용어 우측에 상첨자를 달고, 해당 지면 제일 아래에 보완 설명을 넣는 '각주'의 인입 단축키는?", options: ["Ctrl + N, N", "Ctrl + N, C", "Ctrl + N, P", "Alt + N, N"], correct: 0, key: "Ctrl + N, N", r: "Ctrl + New / Note 의 N, N 연속 입력으로 깔끔하고 학술적인 각주를 부착할 수 있습니다." },
+                        { q: "외부 주소록 DB(엑셀 등)를 연동하여 상장이나 우편 봉투마다 실시간 수취인 이름을 얹어 인쇄하는 유용한 자동화 기술은?", options: ["주소 매칭", "메일 머지 (Mail Merge)", "데이터 바인딩", "라벨 프린팅"], correct: 1, key: "메일 머지", r: "메일 머지(Mail Merge) 기능을 통하면 100장의 다른 수령인 명단용 서류 출력을 3초 만에 완료합니다." },
+                        { q: "루트, 분수, 적분 기호 등 표준 자판으로 타이핑이 불가능한 복잡 수학 공식을 구현하는 수식 편집기 트리거는?", options: ["Ctrl + N, M", "Ctrl + N, F", "Alt + Shift + M", "Ctrl + M"], correct: 0, key: "Ctrl + N, M", r: "Ctrl + New / Math 의 N, M을 눌러 완벽한 물리 화학 수식 컴포넌트를 설계합니다." },
+                        { q: "본문 내부 목차 항목이 추가/제거되었을 때, 문서 서두의 차례 표 번호를 최신화하는 기능 명칭은?", options: ["스타일 리뉴얼", "인덱스 동기화", "차례 새로 고침", "목차 빌더"], correct: 2, key: "차례 새로 고침", r: "차례 새로 고침을 단행하면 직접 눈으로 비교하며 쪽 번호를 수정하지 않아도 완벽 일치합니다." }
+                    ]
+                }
+            },
+            ppt: {
+                title: "파워포인트 (PPT)",
+                questions: {
+                    "하": [
+                        { q: "만든 파일의 가장 첫 슬라이드로 거슬러 올라가 무조건 1번부터 화면 쇼를 출격하는 기능키는?", options: ["F1", "F5", "F11", "Enter"], correct: 1, key: "F5", r: "F5는 문서 내 현재 작업 위치를 불문하고 최전방 1번 페이지에서 프레젠테이션 쇼를 거행합니다." },
+                        { q: "선택한 다수의 도형, 텍스트 상자 등을 가상의 철사로 묶어 일괄 이동/크기제어하게 돕는 '그룹' 조합키는?", options: ["Ctrl + G", "Ctrl + Shift + G", "Ctrl + U", "Ctrl + Alt + G"], correct: 0, key: "Ctrl + G", r: "Ctrl + Group의 'G'입니다. 그룹 해제는 중간에 Shift를 추가한 Ctrl + Shift + G 입니다." },
+                        { q: "도형이나 사각형을 직접 그릴 때, 찌그러짐을 방지하고 균일한 '정원' 혹은 '정사각형'으로 강제 고정하는 보조 키는?", options: ["Alt", "Ctrl", "Shift", "Tab"], correct: 2, key: "Shift", r: "Shift 키를 움켜쥔 채 대각선 드래그하면 원래 종횡비율을 한 치 오차 없이 보존해 줍니다." },
+                        { q: "현재 파일에서 완전히 비어있는 다음 신규 슬라이드 장을 1장 덧붙이는 단축키는?", options: ["Ctrl + N", "Ctrl + M", "Ctrl + Enter", "Alt + N"], correct: 1, key: "Ctrl + M", r: "Ctrl + New File의 'N'과 헛갈리지 않도록 하세요! 신규 슬라이드는 Ctrl + More Slide의 'M'입니다." },
+                        { q: "현대 보편적 디스플레이, 스마트폰, TV, 프로젝터 규격과 완전히 합치하는 PPT의 표준 슬라이드 비율은?", options: ["4:3", "16:10", "16:9", "21:9"], correct: 2, key: "16:9", r: "대다수 미디어 기기가 와이드 스크린 16:9 규격에 맞춰져 있어 가장 대중적이고 여백 손실이 적습니다." }
+                    ],
+                    "중": [
+                        { q: "전체 쇼를 켜지 않고 오로지 지금 내 모니터에 걸쳐있는 그 슬라이드 단 한 장부터 슬라이드 쇼를 실행시키는 단축키는?", options: ["F5", "Shift + F5", "Ctrl + F5", "Alt + F5"], correct: 1, key: "Shift + F5", r: "Shift + F5는 보고 고르고 있는 장에서 즉각 발표 모드로 돌입하게 해줍니다." },
+                        { q: "도형 복제 기능으로, 단순히 복사해서 붙여넣을 뿐만 아니라 이동한 격자 간격까지 학습해 연속으로 도형을 줄 세우는 단축키는?", options: ["Ctrl + C", "Ctrl + V", "Ctrl + D", "Ctrl + Alt + V"], correct: 2, key: "Ctrl + D", r: "Ctrl + Duplicate의 'D'는 한 번 위치 이격 감각을 주면 그 간격 그대로 무한 평행 복제합니다." },
+                        { q: "청중의 눈길이 슬라이드 대신 온전히 강연자의 목소리에 쏠릴 수 있도록 화면을 칠흑같이 어둡게 감추는 쇼 단축키는?", options: ["Key B (Black)", "Key W (White)", "Key Esc", "Ctrl + H"], correct: 0, key: "B", r: "슬라이드 쇼 화면 도중 'B'를 누르면 화면이 꺼집니다. 다시 아무 키나 누르면 돌아옵니다. (W는 화이트)" },
+                        { q: "도형에 이식된 톤, 그라데이션, 윤곽선, 그림자 속성만 고스란히 뽑아 다른 도형에 전이시키는 마법의 단축키는?", options: ["Ctrl + Shift + C", "Ctrl + Alt + C", "Alt + C", "Ctrl + Shift + V"], correct: 0, key: "Ctrl + Shift + C", r: "Ctrl+Shift+C (서식 복사) 후, 복제할 타겟 도형을 쥐고 Ctrl+Shift+V (서식 붙여넣기) 하면 적용 완료됩니다." },
+                        { q: "기획서 내 관계도, 순서도, 조직 구조 등을 전문 디자이너 솜씨 수준으로 즉시 가공 제공하는 PPT 다이어그램 레이아웃 모듈은?", options: ["SmartArt (스마트아트)", "도형 조각", "차트 마법사", "클립 아트"], correct: 0, key: "스마트아트", r: "스마트아트 기능을 이용하면 텍스트만 넣어도 고풍스러운 구조 일러스트레이션으로 바꿔줍니다." }
+                    ],
+                    "상": [
+                        { q: "전체 모든 수십 장의 페이지 템플릿, 고유 로고 로케이션, 꼬리말, 서체를 한 방에 관리하고 커스텀하는 설계소는?", options: ["레이아웃 레이어", "슬라이드 마스터", "테마 팔레트", "글로벌 마스터"], correct: 1, key: "슬라이드 마스터", r: "슬라이드 마스터(Master)에서 전체 디자인 흐름을 쥐고 흔들 수 있으며 개별 교정 노력을 최단으로 만듭니다." },
+                        { q: "앞 장과 뒷 장 슬라이드 내 고유 개체나 텍스트의 미세 변화를 트래킹해 동역학적인 이동 애니메이션으로 전환하는 트렌디 연출은?", options: ["모핑 (Morphing)", "크로스 페이드", "페이지 롤링", "커튼 폴링"], correct: 0, key: "모핑", r: "모핑 효과는 아주 간편하게 영화적인 고품격 애니메이팅을 성취하게 돕는 차세대 전환 효과입니다." },
+                        { q: "청중이 응시하는 대형 화면에는 프레젠테이션만 띄우고, 발표자 모니터엔 대본 필기노트와 남은 시간표를 드러내는 지능적 모드는?", options: ["분할 디스플레이", "쇼 내비게이터", "발표자 도구", "노트 프로젝션"], correct: 2, key: "발표자 도구", r: "발표자 도구는 리허설 시나리오나 밀착 디렉션을 관찰하면서 임할 수 있는 고마운 동반자입니다." },
+                        { q: "슬라이드 쇼 진행 주체 도중, 레이저 포인트 효과를 넘어 화면 특정 부분에 손수 색 펜으로 판서하고 드로잉을 가하는 단축키는?", options: ["Ctrl + P", "Ctrl + L", "Ctrl + D", "Alt + P"], correct: 0, key: "Ctrl + P", r: "Ctrl + Pen의 'P'를 누르면 화살표가 브러시 펜으로 개조되어 지면 마킹을 수행할 수 있습니다. (E는 지우개)" },
+                        { q: "도형을 마우스로 잡고 당길 때 겪는 투박한 그리드 고정에서 벗어나, 픽셀 단위급 극미세 조종을 지원하는 키 조합은?", options: ["Ctrl + 방향키", "Alt + 방향키", "Shift + 방향키", "Ctrl + Alt + 방향키"], correct: 0, key: "Ctrl + 방향키", r: "Ctrl 방향키를 쓰면 그리드 스냅에 묶이지 않고 미세하게 자리를 포지셔닝할 수 있어 그리드가 정교해집니다." }
+                    ]
+                }
+            }
+        };
+
+        let currentCategory = '';
+        let currentDifficulty = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let lives = 3;
+        let gameActive = false;
+
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let player = {
+            x: 80,
+            y: 160,
+            width: 32,
+            height: 48,
+            vy: 0,
+            gravity: 0.6,
+            jumpForce: -10,
+            isJumping: false,
+            isStumbled: false,
+            frame: 0,
+            runSpeed: 7
+        };
+
+        let obstacle = {
+            x: 700,
+            y: 175,
+            width: 32,
+            height: 32,
+            type: 'bug',
+            label: '야근 괴물',
+            active: false,
+            triggered: false
+        };
+
+        let backgroundOffset = 0;
+        let cloudOffset = 0;
+        let groundHeight = 200;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            groundHeight = canvas.height - 40;
+            player.y = groundHeight - player.height;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function showPage(pageId) {
+            document.getElementById('page-category').classList.add('hidden');
+            document.getElementById('page-difficulty').classList.add('hidden');
+            document.getElementById('page-game').classList.add('hidden');
+            document.getElementById('page-gameover').classList.add('hidden');
+            document.getElementById('page-victory').classList.add('hidden');
+            document.getElementById('page-guideline').classList.add('hidden');
+
+            document.getElementById(pageId).classList.remove('hidden');
+            if (pageId === 'page-game') {
+                resizeCanvas();
+            }
+        }
+
+        function goBack(page) {
+            showPage('page-' + page);
+        }
+
+        function selectCategory(cat) {
+            currentCategory = cat;
+            document.getElementById('selected-tool-badge').innerText = `SELECTED: ${quizData[cat].title}`;
+            showPage('page-difficulty');
+        }
+
+        function startGame(difficulty) {
+            currentDifficulty = difficulty;
+            currentQuestions = [...quizData[currentCategory].questions[difficulty]];
+            currentQuestionIndex = 0;
+            score = 0;
+            lives = 3;
+            gameActive = true;
+
+            player.x = 80;
+            player.y = groundHeight - player.height;
+            player.vy = 0;
+            player.isJumping = false;
+            player.isStumbled = false;
+            player.runSpeed = 7;
+            obstacle.x = canvas.width + 40;
+            obstacle.active = true;
+            obstacle.triggered = false;
+            assignObstacleData();
+
+            updateStatusUI();
+            showPage('page-game');
+            requestAnimationFrame(gameLoop);
+        }
+
+        function restartSameGame() {
+            startGame(currentDifficulty);
+        }
+
+        function updateStatusUI() {
+            document.getElementById('game-stage-num').innerText = currentQuestionIndex + 1;
+            document.getElementById('game-score').innerText = String(score).padStart(4, '0');
+            
+            let heartStr = '';
+            for (let i = 0; i < 3; i++) {
+                heartStr += (i < lives) ? '❤️ ' : '🖤 ';
+            }
+            document.getElementById('game-hearts').innerText = heartStr;
+        }
+
+        function assignObstacleData() {
+            const types = [
+                { label: '⚠️ 기습 버그', type: 'bug' },
+                { label: '📂 결재 서류 더미', type: 'doc' },
+                { label: '🏢 야근 괴물', type: 'overtime' },
+                { label: '📧 긴급 공문', type: 'mail' },
+                { label: '🚨 서버 크래시', type: 'server' }
+            ];
+            const currentObstacleType = types[currentQuestionIndex % types.length];
+            obstacle.label = currentObstacleType.label;
+            obstacle.type = currentObstacleType.type;
+            document.getElementById('obstacle-type').innerText = currentObstacleType.label;
+        }
+
+        function drawPlayer() {
+            ctx.save();
+            ctx.translate(player.x, player.y);
+
+            if (player.isStumbled) {
+                ctx.fillStyle = '#4a2511';
+                ctx.fillRect(0, player.height - 8, 12, 6);
+                ctx.fillRect(18, player.height - 8, 12, 6);
+
+                ctx.fillStyle = '#1e3a8a';
+                ctx.fillRect(2, player.height - 24, 28, 18);
+
+                ctx.fillStyle = '#fbcfe8';
+                ctx.fillRect(4, player.height - 36, 24, 14);
+
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(2, player.height - 40, 28, 6);
+
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(8, player.height - 32); ctx.lineTo(12, player.height - 30); ctx.lineTo(8, player.height - 28);
+                ctx.moveTo(24, player.height - 32); ctx.lineTo(20, player.height - 30); ctx.lineTo(24, player.height - 28);
+                ctx.stroke();
+
+                ctx.restore();
+                return;
+            }
+
+            let legOffset = 0;
+            if (!player.isJumping) {
+                legOffset = Math.sin(player.frame * 0.4) * 4;
+            }
+
+            ctx.fillStyle = '#4a2511';
+            ctx.fillRect(4, player.height - 6 + (legOffset > 0 ? 2 : -2), 10, 6);
+            ctx.fillRect(18, player.height - 6 + (legOffset <= 0 ? 2 : -2), 10, 6);
+
+            ctx.fillStyle = '#1e3a8a';
+            ctx.fillRect(2, player.height - 34, 28, 28);
+
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(14, player.height - 24, 4, 14);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(12, player.height - 34, 8, 4);
+
+            ctx.fillStyle = '#fbcfe8';
+            ctx.fillRect(4, player.height - 48, 24, 16);
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(2, player.height - 52, 28, 6);
+            ctx.fillRect(2, player.height - 48, 6, 10);
+
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(6, player.height - 42, 8, 4);
+            ctx.fillRect(18, player.height - 42, 8, 4);
+            ctx.fillRect(14, player.height - 40, 4, 2);
+
+            ctx.restore();
+        }
+
+        function drawObstacle() {
+            ctx.save();
+            ctx.translate(obstacle.x, obstacle.y);
+
+            if (obstacle.type === 'bug') {
+                ctx.fillStyle = '#e11d48';
+                ctx.fillRect(0, 8, 32, 16);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(6, 12, 4, 4);
+                ctx.fillRect(22, 12, 4, 4);
+                ctx.fillRect(2, 24, 4, 8);
+                ctx.fillRect(14, 24, 4, 8);
+                ctx.fillRect(26, 24, 4, 8);
+            } else if (obstacle.type === 'doc') {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(2, 4, 28, 28);
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#000';
+                ctx.strokeRect(2, 4, 28, 28);
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillRect(6, 10, 20, 3);
+                ctx.fillRect(6, 16, 16, 3);
+                ctx.fillRect(6, 22, 20, 3);
+            } else if (obstacle.type === 'overtime') {
+                ctx.fillStyle = '#581c87';
+                ctx.fillRect(4, 0, 24, 32);
+                ctx.fillStyle = '#facc15';
+                ctx.fillRect(8, 10, 4, 4);
+                ctx.fillRect(20, 10, 4, 4);
+            } else if (obstacle.type === 'mail') {
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 6, 32, 20);
+                ctx.strokeStyle = '#dc2626';
+                ctx.strokeRect(0, 6, 32, 20);
+                ctx.beginPath();
+                ctx.moveTo(0, 6);
+                ctx.lineTo(16, 16);
+                ctx.lineTo(32, 6);
+                ctx.stroke();
+            } else {
+                ctx.fillStyle = '#334155';
+                ctx.fillRect(6, 2, 20, 30);
+                ctx.fillStyle = '#22c55e';
+                ctx.fillRect(10, 6, 4, 4);
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(18, 14, 4, 4);
+            }
+
+            ctx.restore();
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#fef08a';
+            ctx.beginPath();
+            ctx.arc(canvas.width - 80, 50, 25, 0, Math.PI * 2);
+            ctx.fill();
+
+            cloudOffset -= 0.2;
+            if (cloudOffset < -150) cloudOffset = canvas.width;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.beginPath();
+            ctx.arc(cloudOffset, 60, 20, 0, Math.PI * 2);
+            ctx.arc(cloudOffset + 25, 50, 28, 0, Math.PI * 2);
+            ctx.arc(cloudOffset + 50, 60, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            backgroundOffset -= player.runSpeed;
+            if (backgroundOffset < -32) backgroundOffset = 0;
+            
+            ctx.fillStyle = '#22c55e';
+            ctx.fillRect(0, groundHeight, canvas.width, 8);
+            ctx.fillStyle = '#78350f';
+            ctx.fillRect(0, groundHeight + 8, canvas.width, canvas.height - groundHeight - 8);
+
+            ctx.strokeStyle = 'rgba(0,0,0,0.15)';
+            ctx.lineWidth = 2;
+            for (let i = backgroundOffset; i < canvas.width; i += 32) {
+                ctx.strokeRect(i, groundHeight + 8, 32, 32);
+            }
+
+            player.frame++;
+            if (player.isJumping) {
+                player.vy += player.gravity;
+                player.y += player.vy;
+                if (player.y >= groundHeight - player.height) {
+                    player.y = groundHeight - player.height;
+                    player.vy = 0;
+                    player.isJumping = false;
+                }
+            }
+
+            drawPlayer();
+
+            if (obstacle.active) {
+                obstacle.x -= player.runSpeed;
+                drawObstacle();
+
+                if (!obstacle.triggered && obstacle.x <= player.x + player.width + 10) {
+                    obstacle.triggered = true;
+                    player.runSpeed = 0;
+                    triggerQuiz();
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function triggerQuiz() {
+            if (!gameActive) return;
+            const modal = document.getElementById('quiz-modal');
+            modal.classList.remove('hidden');
+
+            const q = currentQuestions[currentQuestionIndex];
+            document.getElementById('quiz-question').innerText = q.q;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-2.5 rounded border-2 border-slate-700 bg-slate-800 text-slate-200 hover:border-yellow-400 hover:bg-slate-700 hover:text-white transition-all text-xs font-semibold flex items-center justify-between group";
+                btn.innerHTML = `<span>${idx + 1}. ${opt}</span> <span class="opacity-0 group-hover:opacity-100 font-retro text-[10px] text-yellow-400">SELECT</span>`;
+                btn.onclick = () => submitAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+        }
+
+        function submitAnswer(idx) {
+            const q = currentQuestions[currentQuestionIndex];
+            const isCorrect = (idx === q.correct);
+            submitFinalResult(isCorrect);
+        }
+
+        function submitFinalResult(isCorrect) {
+            const q = currentQuestions[currentQuestionIndex];
+
+            const buttons = document.getElementById('quiz-options').querySelectorAll('button');
+            buttons.forEach(btn => btn.onclick = null);
+
+            const feedback = document.getElementById('quiz-feedback');
+            const title = document.getElementById('feedback-title');
+            const desc = document.getElementById('feedback-text');
+            const nextBtn = document.getElementById('btn-next-action');
+
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                playSound('correct');
+                feedback.className = "p-3 rounded border-2 border-emerald-500 bg-emerald-950/80 text-emerald-300 text-xs leading-relaxed";
+                title.innerText = "✓ CORRECT! 정답입니다!";
+                desc.innerText = q.r;
+                score += 1000;
+                
+                nextBtn.innerText = "멋지게 회피하기 ⚡";
+                nextBtn.onclick = () => {
+                    executeJumpSuccess();
+                };
+            } else {
+                playSound('wrong');
+                lives--;
+                updateStatusUI();
+
+                feedback.className = "p-3 rounded border-2 border-rose-500 bg-rose-950/80 text-rose-300 text-xs leading-relaxed";
+                title.innerText = `✗ WRONG! 오답입니다. (정답: ${q.key})`;
+                desc.innerText = `${q.r} (남은 목숨: ${lives}개)`;
+
+                if (lives <= 0) {
+                    nextBtn.innerText = "체력 방전 (결과 보기) 💀";
+                    nextBtn.onclick = () => {
+                        triggerGameOver();
+                    };
+                } else {
+                    nextBtn.innerText = "다음 장애물로 이동 🏃";
+                    nextBtn.onclick = () => {
+                        executeStumbleAndNext();
+                    };
+                }
+            }
+        }
+
+        function executeJumpSuccess() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+            
+            player.vy = player.jumpForce;
+            player.isJumping = true;
+            player.runSpeed = 8;
+            playSound('jump');
+
+            setTimeout(() => {
+                obstacle.active = false;
+                obstacle.triggered = false;
+                player.runSpeed = 7;
+                
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    obstacle.x = canvas.width + 40;
+                    obstacle.active = true;
+                    assignObstacleData();
+                    updateStatusUI();
+                } else {
+                    triggerVictory();
+                }
+            }, 700);
+        }
+
+        function executeStumbleAndNext() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+            
+            player.isStumbled = true;
+            player.runSpeed = 0;
+
+            setTimeout(() => {
+                player.isStumbled = false;
+                player.runSpeed = 7;
+                obstacle.x = -100;
+                obstacle.active = false;
+                
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    obstacle.x = canvas.width + 40;
+                    obstacle.active = true;
+                    obstacle.triggered = false;
+                    assignObstacleData();
+                    updateStatusUI();
+                } else {
+                    triggerVictory();
+                }
+            }, 800);
+        }
+
+        function triggerGameOver() {
+            gameActive = false;
+            document.getElementById('quiz-modal').classList.add('hidden');
+            showPage('page-gameover');
+        }
+
+        function triggerVictory() {
+            gameActive = false;
+            document.getElementById('quiz-modal').classList.add('hidden');
+            playSound('victory');
+            
+            document.getElementById('victory-score').innerText = score;
+            const catTitle = quizData[currentCategory].title;
+            document.getElementById('victory-tool-name').innerText = catTitle;
+            
+            let levelBadge = 'LEVEL 1: 단축키 입문자 🐣';
+            if (score >= 5000) levelBadge = 'LEVEL 4: 칼퇴의 마스터 아키텍트 🏆';
+            else if (score >= 4000) levelBadge = 'LEVEL 3: 툴 컨트롤러 ⚡';
+            else if (score >= 3000) levelBadge = 'LEVEL 2: 실무 오퍼레이터 🏃';
+            document.getElementById('victory-level-badge').innerText = levelBadge;
+
+            showPage('page-victory');
+        }
+
+        function showGuideline() {
+            const cat = currentCategory || 'excel';
+            const catTitle = quizData[cat].title;
+            document.getElementById('guideline-tool-title').innerText = catTitle;
+            
+            const container = document.getElementById('guideline-content');
+            container.innerHTML = '';
+            
+            const diffs = ['하', '중', '상'];
+            const diffLabels = { 
+                '하': '🟢 필수 기본 단축키 (Lv.1 - 초급)', 
+                '중': '🟡 실무 핵심 커맨드 (Lv.2 - 중급)', 
+                '상': '🔴 고급 마스터 비기 (Lv.3 - 고급)' 
+            };
+            
+            diffs.forEach(diff => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'bg-slate-900 border border-slate-800 rounded p-3 space-y-2';
+                
+                const h3 = document.createElement('h3');
+                h3.className = 'font-retro text-yellow-300 text-xs border-b border-slate-800 pb-1';
+                h3.innerText = diffLabels[diff];
+                groupDiv.appendChild(h3);
+                
+                const qList = quizData[cat].questions[diff];
+                qList.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-start justify-between gap-3 text-xs py-1.5 border-b border-slate-800/50 last:border-0';
+                    row.innerHTML = `
+                        <div class="space-y-0.5">
+                            <span class="text-slate-200 block font-medium">${item.q}</span>
+                            <span class="text-[11px] text-slate-400 block">${item.r}</span>
+                        </div>
+                        <span class="font-retro text-yellow-400 bg-slate-950 px-2 py-1 rounded border border-slate-800 whitespace-nowrap text-xs">${item.key}</span>
+                    `;
+                    groupDiv.appendChild(row);
+                });
+                container.appendChild(groupDiv);
+            });
+            
+            showPage('page-guideline');
+        }
+
+        function copyGuidelineToClipboard() {
+            const cat = currentCategory || 'excel';
+            const catTitle = quizData[cat].title;
+            let text = `[오피스 툴-픽! ${catTitle} 핵심 단축키 치트 시트]\n\n`;
+            
+            ['하', '중', '상'].forEach(diff => {
+                text += `■ 난이도: ${diff}\n`;
+                quizData[cat].questions[diff].forEach((item, idx) => {
+                    text += `${idx + 1}. ${item.q}\n   -> 정답: [${item.key}]\n   - 해설: ${item.r}\n`;
+                });
+                text += '\n';
+            });
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                document.execCommand('copy');
+                const msg = document.getElementById('copy-success-msg');
+                msg.classList.remove('hidden');
+                setTimeout(() => msg.classList.add('hidden'), 2500);
+            } catch (err) {
+                console.error('클립보드 복사 실패:', err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function printOrShare() {
+            const cat = currentCategory || 'excel';
+            const catTitle = quizData[cat].title;
+            const printWin = window.open('', '_blank');
+            if (!printWin) return;
+
+            let contentHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${catTitle} 단축키 가이드라인</title>
+                    <style>
+                        body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif; padding: 30px; color: #111; line-height: 1.5; }
+                        h1 { border-bottom: 2px solid #000; padding-bottom: 10px; font-size: 22px; }
+                        h2 { margin-top: 20px; font-size: 15px; color: #1e3a8a; border-left: 4px solid #1e3a8a; padding-left: 8px; }
+                        .item { margin-bottom: 10px; font-size: 12px; border-bottom: 1px dashed #ccc; padding-bottom: 6px; }
+                        .q { font-weight: 600; color: #222; }
+                        .key { float: right; font-weight: bold; color: #b91c1c; font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+                        .desc { color: #555; font-size: 11px; margin-top: 3px; }
+                        .footer { margin-top: 30px; font-size: 11px; color: #888; text-align: center; border-top: 1px solid #eee; padding-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <h1>🏃‍♂️ 오피스 툴-픽! - ${catTitle} 핵심 치트 시트</h1>
+            `;
+            
+            ['하', '중', '상'].forEach(diff => {
+                contentHtml += `<h2>난이도: ${diff}</h2>`;
+                quizData[cat].questions[diff].forEach(item => {
+                    contentHtml += `
+                        <div class="item">
+                            <span class="key">${item.key}</span>
+                            <div class="q">${item.q}</div>
+                            <div class="desc">${item.r}</div>
+                        </div>
+                    `;
+                });
+            });
+            
+            contentHtml += `
+                    <div class="footer">오피스 툴-픽! 챌린지 • 단축키 마스터 가이드</div>
+                </body>
+                </html>
+            `;
+            printWin.document.write(contentHtml);
+            printWin.document.close();
+            printWin.focus();
+            setTimeout(() => {
+                printWin.print();
+            }, 300);
+        }
+    </script>
+</body>
+</html>
